@@ -10,6 +10,7 @@ export async function GET(
 		const postId = Number(params.id);
 		const getPost = await prisma.post.findUnique({
 			where: { id: postId },
+			include: { category: true },
 		});
 		return Response.json(getPost);
 	} catch (error) {
@@ -25,10 +26,10 @@ export async function PUT(
 ) {
 	try {
 		const postId = Number(params.id);
-		const { title, content, category } = await req.json();
+		const { title, content, categoryId } = await req.json();
 		const updatePost = await prisma.post.update({
 			where: { id: postId },
-			data: { title, content, category },
+			data: { title, content, categoryId: Number(categoryId) },
 		});
 		return Response.json(updatePost);
 	} catch (error) {

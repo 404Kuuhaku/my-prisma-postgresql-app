@@ -14,11 +14,17 @@ import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
 import SearchIcon from "@mui/icons-material/Search";
 
+interface ICategories {
+	id: number; 
+	name: string;
+}
+
 interface IFindPostFormProps {
 	onFliterChange: () => void;
 	search: string;
 	setSearch: React.Dispatch<React.SetStateAction<string>>;
 	category: string;
+	categories: ICategories[];
 	setCategory: React.Dispatch<React.SetStateAction<string>>;
 	sort: string;
 	setSort: React.Dispatch<React.SetStateAction<string>>;
@@ -29,11 +35,12 @@ const FindPostForm = ({
 	search,
 	setSearch,
 	category,
+	categories,
 	setCategory,
 	sort,
 	setSort,
 }: IFindPostFormProps) => {
-	const [categoryOptions, setCategoryOptions] = useState<string[]>([]);
+	// const [categoryOptions, setCategoryOptions] = useState<string[]>([]);
 	const [mounted, setMounted] = useState(false);
 
 	const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -62,18 +69,6 @@ const FindPostForm = ({
 	}, []);
 
 	useEffect(() => {
-		const allCategory = [
-			"tech",
-			"life stlye",
-			"agriculture",
-			"food",
-			"plant",
-			"game",
-			"movie",
-			"anime",
-			"travel",
-		];
-		setCategoryOptions(allCategory);
 		setMounted(true);
 	}, []);
 
@@ -118,9 +113,9 @@ const FindPostForm = ({
 							onChange={handleCategoryChange}
 							MenuProps={MenuProps}
 						>
-							{categoryOptions.map((option) => (
-								<MenuItem key={option} value={option}>
-									{option}
+							{categories.map((option) => (
+								<MenuItem key={option.id} value={option.name}>
+									{option.name}
 								</MenuItem>
 							))}
 						</Select>

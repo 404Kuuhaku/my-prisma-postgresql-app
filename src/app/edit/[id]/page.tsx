@@ -11,7 +11,7 @@ const EditPage = ({ params }: { params: { id: string } }) => {
 	const { id } = params;
 	const [title, setTitle] = useState("");
 	const [content, setContent] = useState("");
-	const [category, setCategory] = useState("");
+	const [categoryId, setCategoryId] = useState("");
 	const router = useRouter();
 
 	const fetchPosts = async (postId: string) => {
@@ -19,7 +19,7 @@ const EditPage = ({ params }: { params: { id: string } }) => {
 			const res = await axios.get(`/api/posts/${postId}`);
 			setTitle(res.data.title);
 			setContent(res.data.content);
-			setCategory(res.data.category);
+			setCategoryId(res.data.categoryId);
 		} catch (error) {
 			console.log("error", error);
 		}
@@ -37,7 +37,7 @@ const EditPage = ({ params }: { params: { id: string } }) => {
 			await axios.put(`/api/posts/${id}`, {
 				title,
 				content,
-				category,
+				categoryId,
 			});
 			router.push("/");
 		} catch (error) {
@@ -55,10 +55,10 @@ const EditPage = ({ params }: { params: { id: string } }) => {
 				<PostForm
 					title={title}
 					content={content}
-					category={category}
+					categoryId={categoryId}
 					onChangeTitle={(event) => setTitle(event.target.value)}
 					onChangeContent={(event) => setContent(event.target.value)}
-					setCategory={setCategory}
+					setCategory={setCategoryId}
 					onSubmit={handleSubmit}
 					buttonName="Update Post"
 				/>

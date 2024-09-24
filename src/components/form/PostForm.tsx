@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useMemo, useState } from "react";
+import axios from "axios";
 import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
@@ -11,10 +12,15 @@ import FormControl from "@mui/material/FormControl";
 import MenuItem from "@mui/material/MenuItem";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 
+interface ICategories {
+	id: number;
+	name: string;
+}
+
 interface IPostFormProps {
 	title: string;
 	content: string;
-	category: string;
+	categoryId: string;
 	onChangeTitle: (event: React.ChangeEvent<HTMLInputElement>) => void;
 	onChangeContent: (event: React.ChangeEvent<HTMLInputElement>) => void;
 	setCategory: React.Dispatch<React.SetStateAction<string>>;
@@ -25,14 +31,15 @@ interface IPostFormProps {
 const PostForm = ({
 	title,
 	content,
-	category,
+	categoryId,
 	onChangeTitle,
 	onChangeContent,
 	setCategory,
 	onSubmit,
 	buttonName,
 }: IPostFormProps) => {
-	const [categoryOptions, setCategoryOptions] = useState<string[]>([]);
+	// const [categoryOptions, setCategoryOptions] = useState<string[]>([]);
+	const [categories, setCategories] = useState<ICategories[]>([]);
 
 	const handleCategoryChange = (event: SelectChangeEvent) => {
 		setCategory(event.target.value);
@@ -52,19 +59,29 @@ const PostForm = ({
 		};
 	}, []);
 
+	const fetchCategories = async () => {
+		try {
+			const res = await axios.get(`/api/categories`);
+			setCategories(res.data);
+		} catch (error) {
+			console.log("error", error);
+		}
+	};
+
 	useEffect(() => {
-		const allCategory = [
-			"tech",
-			"life stlye",
-			"agriculture",
-			"food",
-			"plant",
-			"game",
-			"movie",
-			"anime",
-			"travel",
-		];
-		setCategoryOptions(allCategory);
+		// const allCategory = [
+		// 	"tech",
+		// 	"life stlye",
+		// 	"agriculture",
+		// 	"food",
+		// 	"plant",
+		// 	"game",
+		// 	"movie",
+		// 	"anime",
+		// 	"travel",
+		// ];
+		// setCategoryOptions(allCategory);
+		fetchCategories();
 	}, []);
 
 	return (
@@ -118,13 +135,13 @@ const PostForm = ({
 							labelId="select-category"
 							id="category"
 							label="Select Category"
-							value={category}
+							value={categoryId}
 							onChange={handleCategoryChange}
 							MenuProps={MenuProps}
 						>
-							{categoryOptions.map((option) => (
-								<MenuItem key={option} value={option}>
-									{option}
+							{categories.map((option) => (
+								<MenuItem key={option.id} value={option.id}>
+									{option.name}
 								</MenuItem>
 							))}
 						</Select>

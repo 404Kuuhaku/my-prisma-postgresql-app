@@ -18,16 +18,22 @@ import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import FindPostForm from "@/components/form/FindPostForm";
 
+interface ICategory {
+	id: number;
+	name: string;
+}
+
 interface IPost {
 	id: number;
 	title: string;
-	category: string;
+	category: ICategory;
 }
 
 const ListPage = () => {
 	const [posts, setPosts] = useState<IPost[]>([]);
 	const [search, setSearch] = useState("");
 	const [category, setCategory] = useState("");
+	const [categories, setCategories] = useState([]);
 	const [sort, setSort] = useState("desc");
 	const router = useRouter();
 
@@ -45,8 +51,18 @@ const ListPage = () => {
 		}
 	};
 
+	const fetchCategories = async () => {
+		try {
+			const res = await axios.get(`/api/categories`);
+			setCategories(res.data);
+		} catch (error) {
+			console.log("error", error);
+		}
+	};
+
 	useEffect(() => {
 		fetchPosts();
+		fetchCategories();
 	}, []);
 
 	const handleFilterChange = () => {
@@ -75,6 +91,7 @@ const ListPage = () => {
 					search={search}
 					setSearch={setSearch}
 					category={category}
+					categories={categories}
 					setCategory={setCategory}
 					sort={sort}
 					setSort={setSort}
@@ -116,7 +133,7 @@ const ListPage = () => {
 										{post.title}
 									</TableCell>
 									<TableCell align="right">
-										{post.category}
+										{post.category.name}
 									</TableCell>
 									<TableCell align="right">
 										<Button

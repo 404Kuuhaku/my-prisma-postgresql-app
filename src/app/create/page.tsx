@@ -10,7 +10,7 @@ import PostForm from "@/components/form/PostForm";
 const CreatePage = () => {
 	const [title, setTitle] = useState("");
 	const [content, setContent] = useState("");
-	const [category, setCategory] = useState("");
+	const [categoryId, setCategoryId] = useState("");
 	const router = useRouter();
 	const handleSubmit = async (event: React.FormEvent) => {
 		event.preventDefault();
@@ -18,7 +18,7 @@ const CreatePage = () => {
 			await axios.post("/api/posts", {
 				title,
 				content,
-				category,
+				categoryId,
 			});
 			router.push("/");
 		} catch (error) {
@@ -36,10 +36,10 @@ const CreatePage = () => {
 				<PostForm
 					title={title}
 					content={content}
-					category={category}
+					categoryId={categoryId}
 					onChangeTitle={(event) => setTitle(event.target.value)}
 					onChangeContent={(event) => setContent(event.target.value)}
-					setCategory={setCategory}
+					setCategory={setCategoryId}
 					onSubmit={handleSubmit}
 					buttonName="Creat new Post"
 				/>
