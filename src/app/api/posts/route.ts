@@ -15,37 +15,7 @@ export async function GET(req: NextRequest) {
 		const searchParams = req.nextUrl.searchParams;
 		const search = searchParams.get("search") || "";
 		const category = searchParams.get("category");
-		// const sort = searchParams.get("sort") || "desc";
 		const sort = validateSort(searchParams.get("sort"));
-
-		// if (category) {
-		// 	const posts = await prisma.post.findMany({
-		// 		where: {
-		// 			title: {
-		// 				contains: search,
-		// 				mode: "insensitive",
-		// 			},
-		// 			category,
-		// 		},
-		// 		orderBy: {
-		// 			createdAt: sort,
-		// 		},
-		// 	});
-		// 	return Response.json(posts);
-		// }
-
-		// const posts = await prisma.post.findMany({
-		// 	where: {
-		// 		title: {
-		// 			contains: search,
-		// 			mode: "insensitive",
-		// 		},
-		// 	},
-		// 	orderBy: {
-		// 		createdAt: sort,
-		// 	},
-		// });
-		// return Response.json(posts);
 
 		const whereClause = {
 			title: {
