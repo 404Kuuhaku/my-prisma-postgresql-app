@@ -21,15 +21,24 @@ import FindPostForm from "@/components/form/FindPostForm";
 interface IPost {
 	id: number;
 	title: string;
+	category: string;
 }
 
 const ListPage = () => {
 	const [posts, setPosts] = useState<IPost[]>([]);
+	const [search, setSearch] = useState("");
+	const [category, setCategory] = useState("");
+	const [sort, setSort] = useState("desc");
 	const router = useRouter();
 
 	const fetchPosts = async () => {
 		try {
-			const res = await axios.get("/api/posts");
+			const query = new URLSearchParams({
+				search,
+				category,
+				sort,
+			}).toString();
+			const res = await axios.get(`/api/posts?${query}`);
 			setPosts(res.data);
 		} catch (error) {
 			console.log("error", error);
@@ -39,6 +48,10 @@ const ListPage = () => {
 	useEffect(() => {
 		fetchPosts();
 	}, []);
+
+	const handleFilterChange = () => {
+		fetchPosts();
+	};
 
 	const deletePost = async (id: number) => {
 		try {
@@ -57,9 +70,16 @@ const ListPage = () => {
 				</Typography>
 			</Box>
 			<Box sx={{ maxWidth: "80%", mx: "auto", py: 2 }}>
-				<FindPostForm />
+				<FindPostForm
+					onFliterChange={handleFilterChange}
+					search={search}
+					setSearch={setSearch}
+					category={category}
+					setCategory={setCategory}
+					sort={sort}
+					setSort={setSort}
+				/>
 			</Box>
-			{/* <FindPostForm /> */}
 			<Box sx={{ maxWidth: "80%", mx: "auto", py: 5 }}>
 				<TableContainer component={Paper}>
 					<Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -96,7 +116,7 @@ const ListPage = () => {
 										{post.title}
 									</TableCell>
 									<TableCell align="right">
-										<Typography> Dummy Category</Typography>
+										{post.category}
 									</TableCell>
 									<TableCell align="right">
 										<Button

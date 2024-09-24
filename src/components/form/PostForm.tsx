@@ -1,25 +1,72 @@
 "use client";
 
+import React, { useEffect, useMemo, useState } from "react";
 import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import BackupIcon from "@mui/icons-material/Backup";
+import AddCircleIcon from "@mui/icons-material/AddCircle";
+import InputLabel from "@mui/material/InputLabel";
+import FormControl from "@mui/material/FormControl";
+import MenuItem from "@mui/material/MenuItem";
+import Select, { SelectChangeEvent } from "@mui/material/Select";
 
 interface IPostFormProps {
 	title: string;
 	content: string;
+	category: string;
 	onChangeTitle: (event: React.ChangeEvent<HTMLInputElement>) => void;
 	onChangeContent: (event: React.ChangeEvent<HTMLInputElement>) => void;
+	setCategory: React.Dispatch<React.SetStateAction<string>>;
 	onSubmit: (event: React.FormEvent) => void;
+	buttonName: string;
 }
 
 const PostForm = ({
 	title,
 	content,
+	category,
 	onChangeTitle,
 	onChangeContent,
+	setCategory,
 	onSubmit,
+	buttonName,
 }: IPostFormProps) => {
+	const [categoryOptions, setCategoryOptions] = useState<string[]>([]);
+
+	const handleCategoryChange = (event: SelectChangeEvent) => {
+		setCategory(event.target.value);
+	};
+
+	const MenuProps = useMemo(() => {
+		const ITEM_HEIGHT = 48;
+		const ITEM_PADDING_TOP = 8;
+
+		return {
+			PaperProps: {
+				style: {
+					maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+					width: 250,
+				},
+			},
+		};
+	}, []);
+
+	useEffect(() => {
+		const allCategory = [
+			"tech",
+			"life stlye",
+			"agriculture",
+			"food",
+			"plant",
+			"game",
+			"movie",
+			"anime",
+			"travel",
+		];
+		setCategoryOptions(allCategory);
+	}, []);
+
 	return (
 		<>
 			<form onSubmit={onSubmit}>
@@ -63,13 +110,46 @@ const PostForm = ({
 						py: 2,
 					}}
 				>
+					<FormControl sx={{ m: 1, width: "40%" }}>
+						<InputLabel id="demo-simple-select-autowidth-label">
+							Select Category
+						</InputLabel>
+						<Select
+							labelId="select-category"
+							id="category"
+							label="Select Category"
+							value={category}
+							onChange={handleCategoryChange}
+							MenuProps={MenuProps}
+						>
+							{categoryOptions.map((option) => (
+								<MenuItem key={option} value={option}>
+									{option}
+								</MenuItem>
+							))}
+						</Select>
+					</FormControl>
+				</Box>
+				<Box
+					sx={{
+						display: "flex",
+						justifyContent: "center",
+						py: 2,
+					}}
+				>
 					<Button
 						sx={{ width: "40%" }}
 						variant="contained"
-						startIcon={<BackupIcon />}
+						startIcon={
+							buttonName === "Update Post" ? (
+								<BackupIcon />
+							) : (
+								<AddCircleIcon />
+							)
+						}
 						type="submit"
 					>
-						Update Post
+						{buttonName}
 					</Button>
 				</Box>
 			</form>

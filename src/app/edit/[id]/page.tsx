@@ -11,6 +11,7 @@ const EditPage = ({ params }: { params: { id: string } }) => {
 	const { id } = params;
 	const [title, setTitle] = useState("");
 	const [content, setContent] = useState("");
+	const [category, setCategory] = useState("");
 	const router = useRouter();
 
 	const fetchPosts = async (postId: string) => {
@@ -18,6 +19,7 @@ const EditPage = ({ params }: { params: { id: string } }) => {
 			const res = await axios.get(`/api/posts/${postId}`);
 			setTitle(res.data.title);
 			setContent(res.data.content);
+			setCategory(res.data.category);
 		} catch (error) {
 			console.log("error", error);
 		}
@@ -35,6 +37,7 @@ const EditPage = ({ params }: { params: { id: string } }) => {
 			await axios.put(`/api/posts/${id}`, {
 				title,
 				content,
+				category,
 			});
 			router.push("/");
 		} catch (error) {
@@ -49,71 +52,15 @@ const EditPage = ({ params }: { params: { id: string } }) => {
 				</Typography>
 			</Box>
 			<Box sx={{ maxWidth: "80%", mx: "auto", py: 5 }}>
-				{/* <form onSubmit={handleSubmit}>
-					<Box
-						sx={{
-							display: "flex",
-							justifyContent: "center",
-							py: 2,
-						}}
-					>
-						<TextField
-							sx={{ width: "40%" }}
-							id="Title"
-							label="Title"
-							variant="outlined"
-							required
-							value={title}
-							onChange={(
-								event: React.ChangeEvent<HTMLInputElement>
-							) => {
-								setTitle(event.target.value);
-							}}
-						/>
-					</Box>
-					<Box
-						sx={{
-							display: "flex",
-							justifyContent: "center",
-							py: 2,
-						}}
-					>
-						<TextField
-							sx={{ width: "40%" }}
-							id="Content"
-							label="Content"
-							variant="outlined"
-							value={content}
-							onChange={(
-								event: React.ChangeEvent<HTMLInputElement>
-							) => {
-								setContent(event.target.value);
-							}}
-						/>
-					</Box>
-					<Box
-						sx={{
-							display: "flex",
-							justifyContent: "center",
-							py: 2,
-						}}
-					>
-						<Button
-							sx={{ width: "40%" }}
-							variant="contained"
-							startIcon={<BackupIcon />}
-							type="submit"
-						>
-							Update Post
-						</Button>
-					</Box>
-				</form> */}
 				<PostForm
 					title={title}
 					content={content}
+					category={category}
 					onChangeTitle={(event) => setTitle(event.target.value)}
 					onChangeContent={(event) => setContent(event.target.value)}
+					setCategory={setCategory}
 					onSubmit={handleSubmit}
+					buttonName="Update Post"
 				/>
 			</Box>
 		</>
