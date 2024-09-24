@@ -16,6 +16,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
+import FindPostForm from "@/components/form/FindPostForm";
 
 interface IPost {
 	id: number;
@@ -55,6 +56,10 @@ const ListPage = () => {
 					Blog Posts
 				</Typography>
 			</Box>
+			<Box sx={{ maxWidth: "80%", mx: "auto", py: 2 }}>
+				<FindPostForm />
+			</Box>
+			{/* <FindPostForm /> */}
 			<Box sx={{ maxWidth: "80%", mx: "auto", py: 5 }}>
 				<TableContainer component={Paper}>
 					<Table sx={{ minWidth: 650 }} aria-label="simple table">
