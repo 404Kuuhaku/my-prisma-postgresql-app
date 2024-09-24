@@ -14,6 +14,8 @@ import Button from "@mui/material/Button";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
+import Typography from "@mui/material/Typography";
+import Box from "@mui/material/Box";
 
 interface IPost {
 	id: number;
@@ -48,63 +50,87 @@ const ListPage = () => {
 
 	return (
 		<>
-			<TableContainer component={Paper}>
-				<Table sx={{ minWidth: 650 }} aria-label="simple table">
-					<TableHead>
-						<TableRow>
-							<TableCell>Title</TableCell>
-							<TableCell align="right">Edit</TableCell>
-							<TableCell align="right">Delete</TableCell>
-						</TableRow>
-					</TableHead>
-					<TableBody>
-						{posts.map((post) => (
-							<TableRow
-								key={post.id}
-								sx={{
-									"&:last-child td, &:last-child th": {
-										border: 0,
-									},
-								}}
-							>
-								<TableCell component="th" scope="row">
-									{post.title}
+			<Box sx={{ maxWidth: "80%", mx: "auto", py: 5 }}>
+				<Typography variant="h2" component="h2">
+					Blog Posts
+				</Typography>
+			</Box>
+			<Box sx={{ maxWidth: "80%", mx: "auto", py: 5 }}>
+				<TableContainer component={Paper}>
+					<Table sx={{ minWidth: 650 }} aria-label="simple table">
+						<TableHead>
+							<TableRow>
+								<TableCell sx={{ fontWeight: 600 }}>
+									Title
 								</TableCell>
-								<TableCell align="right">
-									<Button
-										variant="outlined"
-										startIcon={<EditIcon />}
-										onClick={() =>
-											router.push(`/edit/${post.id}`)
-										}
-									>
-										Edit
-									</Button>
+								<TableCell
+									align="right"
+									sx={{ fontWeight: 600 }}
+								>
+									Category
 								</TableCell>
-								<TableCell align="right">
-									<Button
-										variant="outlined"
-										startIcon={<DeleteIcon />}
-										color="error"
-										onClick={() => {
-											deletePost(post.id);
-										}}
-									>
-										Delete
-									</Button>
+								<TableCell
+									align="right"
+									sx={{ fontWeight: 600 }}
+								>
+									Actions
 								</TableCell>
 							</TableRow>
-						))}
-					</TableBody>
-				</Table>
-			</TableContainer>
-			<Button
-				variant="contained"
-				startIcon={<AddCircleIcon />}
-				onClick={() => router.push("/create")}
-			>
-				Create New Post
-			</Button>
+						</TableHead>
+						<TableBody>
+							{posts.map((post) => (
+								<TableRow
+									key={post.id}
+									sx={{
+										"&:last-child td, &:last-child th": {
+											border: 0,
+										},
+									}}
+								>
+									<TableCell component="th" scope="row">
+										{post.title}
+									</TableCell>
+									<TableCell align="right">
+										<Typography> Dummy Category</Typography>
+									</TableCell>
+									<TableCell align="right">
+										<Button
+											variant="outlined"
+											startIcon={<EditIcon />}
+											sx={{ mx: 3 }}
+											onClick={() =>
+												router.push(`/edit/${post.id}`)
+											}
+										>
+											Edit
+										</Button>
+										<Button
+											variant="outlined"
+											startIcon={<DeleteIcon />}
+											sx={{ mx: 3 }}
+											color="error"
+											onClick={() => {
+												deletePost(post.id);
+											}}
+										>
+											Delete
+										</Button>
+									</TableCell>
+								</TableRow>
+							))}
+						</TableBody>
+					</Table>
+				</TableContainer>
+			</Box>
+			<Box sx={{ maxWidth: "80%", mx: "auto", py: 5 }}>
+				<Button
+					variant="contained"
+					startIcon={<AddCircleIcon />}
+					onClick={() => router.push("/create")}
+				>
+					Create New Post
+				</Button>
+			</Box>
 		</>
 	);
 };
